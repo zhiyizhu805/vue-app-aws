@@ -21,9 +21,22 @@ const api = new Api(stack, "Api", {
   },
 });
 
+const site = new StaticSite(stack, "VueJSSite", {
+  path: "packages/frontend",
+  buildOutput: "dist",
+  buildCommand: "npm run build",
+  errorPage: "redirect_to_index_page",
+  environment: {
+    // Pass in the API endpoint to our app
+    VITE_APP_API_URL: api.url,
+  },
+});
+
 // Show the URLs in the output
 stack.addOutputs({
+  SiteUrl: site.url,
   ApiEndpoint: api.url,
 });
+
 }
 
