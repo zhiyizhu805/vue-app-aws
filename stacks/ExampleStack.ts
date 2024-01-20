@@ -8,4 +8,22 @@ export function ExampleStack({ stack }: StackContext) {
     },
     primaryIndex: { partitionKey: "counter" },
   });
+  // Create the HTTP API
+const api = new Api(stack, "Api", {
+  defaults: {
+    function: {
+      // Bind the table name to our API
+      bind: [table],
+    },
+  },
+  routes: {
+    "POST /": "packages/functions/src/lambda.main",
+  },
+});
+
+// Show the URLs in the output
+stack.addOutputs({
+  ApiEndpoint: api.url,
+});
 }
+
